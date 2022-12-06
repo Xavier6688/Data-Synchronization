@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.data.opr.mapper.CrmEmployeeMapper">
+
+    <!--插入crm系统中的员工信息-->
+    <insert id="addAll" parameterType="com.data.opr.entity.Employee">
+        insert into crmemployee (`id`,`name`,`department`,`status`) values
+        <foreach collection="crmlist" item="item" separator=",">
+            (#{item.id},#{item.name},#{item.department},#{item.status})
+        </foreach>
+    </insert>
+
+    <!--查询crm系统中的所有员工信息-->
+    <select id="getAllEmployeeFromCrmSys" resultType="com.data.opr.entity.Employee">
+        select * from crm.crmemployee
+    </select>
+
+    <!--更新crm系统中的员工信息-->
+    <insert id="updateData" parameterType="com.data.opr.entity.Employee">
+        INSERT INTO crmemployee (`id`,`name`,`department`,`status`)
+        VALUES
+            <foreach collection="dflist" item="item" separator=",">
+                (#{item.id},#{item.name},#{item.department},#{item.status})
+            </foreach>
+        ON DUPLICATE KEY UPDATE
+            `department` = values(department),
+            `status` = values(status)
+    </insert>
+
+</mapper>
